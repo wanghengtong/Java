@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 彩色日志依赖的渲染类 -->
+    <conversionRule conversionWord="clr"
+                    converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wex"
+                    converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="wEx"
+                    converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="lowercaseLevel"
+                    converterClass="com.wanghengtong.logback.common.LogLevelToLowercaseConverter" />
+
+    <!-- 日志输出格式 -->
+    <property name="log.charset" value="UTF-8"/>
+    <property name="log.dateFormat" value="%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ}"/>
+
+    <!--<property name="log.pattern" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{20} - [%method,%line] - %msg%n"/>-->
+    <property name="log.json.pattern"
+              value='{
+            "level": "%lowercaseLevel",
+            "ts": "${log.dateFormat}",
+            "caller": "[%thread] [%method - %line]",
+            "msg": "%msg",
+            "ztTraceId": "%X{ztTraceId}",
+            "type": "%X{logType}",
+            "stacktrace": "%wEx"
+    }'/>
+
+    <!-- 日志输出路径、文件大小、日志文件保留时间: logging.file.path在application.yaml中配置，注意下面是springProperty，不是property -->
+    <springProperty scope="context" name="log.path" source="logging.file.path"/>
+    <springProperty scope="context" name="log.max-size" source="logging.file.max-size"/>
+    <springProperty scope="context" name="log.max-history" source="logging.file.max-history"/>
+    <springProperty scope="context" name="log.totalSizeCap" source="logging.file.totalSizeCap"/>
+
+    <!-- 控制台输出 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder charset="${log.charset}" class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <pattern>
+                    <pattern>${log.json.pattern}</pattern>
+                </pattern>
+            </providers>
+        </encoder>
+    </appender>
+
+    <!-- 时间滚动输出 level为 DEBUG 日志 -->
+    <appender name="DEBUG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--日志文件输出格式-->
+        <encoder charset="${log.charset}" class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <pattern>
+                    <pattern>${log.json.pattern}</pattern>
+                </pattern>
+            </providers>
+        </encoder>
+        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 每天日志归档路径以及格式 -->
+            <fileNamePattern>${log.path}/log-debug-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <maxFileSize>${log.max-size}</maxFileSize>
+            <!--日志文件保留天数-->
+            <maxHistory>${log.max-history}</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+            <!--该滚动策略日志的总大小，超过的日志会被清除-->
+            <totalSizeCap>${log.totalSizeCap}</totalSizeCap>
+        </rollingPolicy>
+        <!-- 此日志文件只记录debug级别的 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <!-- 过滤的级别 -->
+            <level>debug</level>
+            <!-- 匹配时的操作：接收（记录） -->
+            <onMatch>ACCEPT</onMatch>
+            <!-- 不匹配时的操作：拒绝（不记录） -->
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 时间滚动输出 level为 INFO 日志 -->
+    <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--日志文件输出格式-->
+        <encoder charset="${log.charset}" class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <pattern>
+                    <pattern>${log.json.pattern}</pattern>
+                </pattern>
+            </providers>
+        </encoder>
+        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 每天日志归档路径以及格式 -->
+            <fileNamePattern>${log.path}/log-info-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <maxFileSize>${log.max-size}</maxFileSize>
+            <!--日志文件保留天数-->
+            <maxHistory>${log.max-history}</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+            <!--该滚动策略日志的总大小，超过的日志会被清除-->
+            <totalSizeCap>${log.totalSizeCap}</totalSizeCap>
+        </rollingPolicy>
+        <!-- 此日志文件只记录info级别的 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>info</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 时间滚动输出 level为 WARN 日志 -->
+    <appender name="WARN_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--日志文件输出格式-->
+        <encoder charset="${log.charset}" class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <pattern>
+                    <pattern>${log.json.pattern}</pattern>
+                </pattern>
+            </providers>
+        </encoder>
+        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 每天日志归档路径以及格式 -->
+            <fileNamePattern>${log.path}/log-warn-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <maxFileSize>${log.max-size}</maxFileSize>
+            <!--日志文件保留天数-->
+            <maxHistory>${log.max-history}</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+            <!--该滚动策略日志的总大小，超过的日志会被清除-->
+            <totalSizeCap>${log.totalSizeCap}</totalSizeCap>
+        </rollingPolicy>
+        <!-- 此日志文件只记录warn级别的 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>warn</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 时间滚动输出 level为 ERROR 日志 -->
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--日志文件输出格式-->
+        <encoder charset="${log.charset}" class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <pattern>
+                    <pattern>${log.json.pattern}</pattern>
+                </pattern>
+            </providers>
+        </encoder>
+        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 每天日志归档路径以及格式 -->
+            <fileNamePattern>${log.path}/log-error-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <maxFileSize>${log.max-size}</maxFileSize>
+            <!--日志文件保留天数-->
+            <maxHistory>${log.max-history}</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+            <!--该滚动策略日志的总大小，超过的日志会被清除-->
+            <totalSizeCap>${log.totalSizeCap}</totalSizeCap>
+        </rollingPolicy>
+        <!-- 此日志文件只记录ERROR级别的 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- 时间滚动输出 level为 配置级别及其以上级别的${logging.level.root}日志 -->
+    <appender name="ALL_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--日志文件输出格式-->
+        <encoder charset="${log.charset}" class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <pattern>
+                    <pattern>${log.json.pattern}</pattern>
+                </pattern>
+            </providers>
+        </encoder>
+        <!-- 日志记录器的滚动策略，按日期，按大小记录 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 每天日志归档路径以及格式 按天记录-->
+            <fileNamePattern>${log.path}/log-all-%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <maxFileSize>${log.max-size}</maxFileSize>
+            <!--日志文件保留天数-->
+            <maxHistory>${log.max-history}</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+            <!--该滚动策略日志的总大小，超过的日志会被清除-->
+            <totalSizeCap>${log.totalSizeCap}</totalSizeCap>
+        </rollingPolicy>
+        <!-- 此日志文件只记录ERROR级别的 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>${logging.level.root}</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>NEUTRAL</onMismatch>
+        </filter>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="DEBUG_FILE"/>
+        <appender-ref ref="INFO_FILE"/>
+        <appender-ref ref="WARN_FILE"/>
+        <appender-ref ref="ERROR_FILE"/>
+        <appender-ref ref="ALL_FILE"/>
+    </root>
+
+</configuration>

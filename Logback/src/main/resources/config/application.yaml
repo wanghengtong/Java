@@ -1,0 +1,13 @@
+server:
+  port: 8080
+
+logging:
+  file:
+    totalSizeCap: 2GB
+    max-history: 30
+    max-size: 1GB
+    path: /log
+  level:
+    root: debug
+    org:
+      springframework: error
