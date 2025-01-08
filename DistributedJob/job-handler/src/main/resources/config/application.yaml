@@ -1,0 +1,29 @@
+server:
+  port: 8081
+
+log:
+  file:
+    totalSizeCap: 2GB
+    maxFileSize: 100MB
+    maxHistory: 30
+    path: /logs
+  level:
+    root: info
+    org:
+      springframework: error
+
+### xxl-job admin address list, such as "http://address" or "http://address01,http://address02"
+xxl:
+  job:
+    admin:
+      addresses: http://127.0.0.1:8080/xxl-job-admin
+    accessToken: default_token
+    executor:
+      #执行器app名称，必须和控制台那边配置一样，不然注册不上去
+      appname: xxl-job-test
+      address: # default use address to registry , otherwise use ip:port if address is null
+      ip: # xxl-job executor server-info
+      port: 9999
+      logpath: /logs/xxl-job/jobhandler
+      #日志保存天数
+      logretentiondays: 30
