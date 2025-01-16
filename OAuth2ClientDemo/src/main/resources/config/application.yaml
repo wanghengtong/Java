@@ -1,0 +1,14 @@
+server:
+  port: 8080
+
+oauth2:
+  client:
+    clientId: clientId
+    clientSecret: clientSecret
+    responseType: code
+    scope: uid,name,email,mobile
+    grantType: authorization_code
+    redirectUri: http://192.168.40.21:8080/authorize/login
+    getCodeUri: https://xxx/oauth2.0
+    accessTokenUri: https://xxx/oauth2.0/token
+    resourceUri: https://xxx/oauth2.0/res
