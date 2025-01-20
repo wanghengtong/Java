@@ -1,0 +1,25 @@
+server:
+  port: 8080
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: my-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+log:
+  file:
+    totalSizeCap: 2GB
+    maxFileSize: 100MB
+    maxHistory: 30
+    path: /logs
+  level:
+    root: info
+    org:
+      springframework: error
