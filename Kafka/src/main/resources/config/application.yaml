@@ -4,14 +4,27 @@ server:
 spring:
   kafka:
     bootstrap-servers: localhost:9092
+    producer:
+      acks: 1
+      retries: 0
+      batch-size: 30720000
+      buffer-memory: 33554432
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
     consumer:
-      group-id: my-group
+      group-id: test-kafka
+      enable-auto-commit: false
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      max-poll-records: 1000
+      session:
+        timeout:
+          ms: 300000
+    listener:
+      missing-topics-fatal: false
+      type: batch
+      ack-mode: manual_immediate
 
 log:
   file:
