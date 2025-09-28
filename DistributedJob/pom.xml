@@ -5,7 +5,7 @@
     <groupId>com.wanghengtong.distributedjob</groupId>
     <artifactId>DistributedJob</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>distributed-job</name>
+    <name>Distributed-job</name>
     <description>distributed-job</description>
     <packaging>pom</packaging>
 
