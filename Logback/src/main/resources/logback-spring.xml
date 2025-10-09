@@ -21,7 +21,6 @@
             "ts": "${log.dateFormat}",
             "caller": "[%thread] [%method - %line]",
             "msg": "%msg",
-            "ztTraceId": "%X{ztTraceId}",
             "type": "%X{logType}",
             "stacktrace": "%wEx"
     }'/>

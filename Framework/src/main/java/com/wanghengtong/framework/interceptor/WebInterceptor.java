@@ -2,6 +2,7 @@ package com.wanghengtong.framework.interceptor;
 
 import com.wanghengtong.framework.utils.IpUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,9 +21,23 @@ import java.util.Enumeration;
 @Component
 public class WebInterceptor implements HandlerInterceptor {
 
+    private static final String TRACE_ID = "traceId";
+    private static final String START_TIME = "startTime";
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         log.info("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+");
+
+        // 记录请求开始时间
+        long startTime = System.currentTimeMillis();
+        request.setAttribute(START_TIME, startTime);
+        // 打印TraceId
+        String traceId = MDC.get(TRACE_ID);
+        if (traceId != null) {
+            log.info("TraceId: {}", traceId);
+        } else {
+            log.warn("未能获取到TraceId");
+        }
         Enumeration<String> headerNames = request.getHeaderNames();
         if (headerNames != null) {
             while (headerNames.hasMoreElements()) {
@@ -59,7 +74,17 @@ public class WebInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        // 可以在这里添加完成后的逻辑
+        // 计算请求耗时
+        Long startTime = (Long) request.getAttribute(START_TIME);
+        if (startTime != null) {
+            long endTime = System.currentTimeMillis();
+            long duration = endTime - startTime;
+            String traceId = MDC.get(TRACE_ID);
+            log.info("Request completed, TraceId: {}, Duration: {} ms", traceId != null ? traceId : "N/A", duration);
+        } else {
+            log.info("Request completed");
+        }
+        log.info("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+\n");
     }
 
 }

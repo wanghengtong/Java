@@ -10,8 +10,8 @@
     <conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
 
     <property name="log.charset" value="UTF-8"/>
-    <property name="log.pattern" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{20} - [%class.%method:%line] - %msg%n"/>
-    <property name="console_log_pattern" value="%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint}%clr(${LOG_LEVEL_PATTERN:-%5p}){cyan} %clr(${PID:- }){magenta} %clr(-){faint} %clr([%12.12t]){yellow} %clr(%-35.35logger{34}){green} [%clr(%method){bold,yellow}:%clr(%line){bold,magenta}] %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
+    <property name="log.pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %X{traceId} [%thread] %logger{20} - [%class.%method:%line] - %msg%n"/>
+    <property name="console_log_pattern" value="%clr(%X{traceId}){cyan} %clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}){yellow} %clr(%-35.35logger{30}){green} [%clr(%method){bold,yellow}:%clr(%line){bold,magenta}] %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"/>
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>

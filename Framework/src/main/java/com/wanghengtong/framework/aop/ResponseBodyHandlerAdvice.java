@@ -20,7 +20,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 @RestControllerAdvice
 public class ResponseBodyHandlerAdvice implements ResponseBodyAdvice {
 
-
     /**
      * @param returnType
      * @param converterType
@@ -58,7 +57,6 @@ public class ResponseBodyHandlerAdvice implements ResponseBodyAdvice {
             log.error(e.getMessage(), e);
             log.info("Response Body: {}", body);
         }
-        log.info("=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+\n");
         return result;
     }
 

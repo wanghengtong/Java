@@ -11,7 +11,7 @@ import java.util.Arrays;
 
 /**
  * @author wanghengtong
- * @desc IpUtils
+ * @desc FrameworkApplication
  * @date 2024年12月25日 21:24
  */
 @EnableAsync

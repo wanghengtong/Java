@@ -1,6 +1,7 @@
 package com.wanghengtong.framework.config;
 
 import com.wanghengtong.framework.interceptor.LicenseCheckInterceptor;
+import com.wanghengtong.framework.interceptor.TraceIdInterceptor;
 import com.wanghengtong.framework.interceptor.WebInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -20,9 +21,13 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Autowired
     private LicenseCheckInterceptor licenseCheckInterceptor;
+    
+    @Autowired
+    private TraceIdInterceptor traceIdInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(traceIdInterceptor);
         registry.addInterceptor(webInterceptor);
         // registry.addInterceptor(licenseCheckInterceptor);
     }
