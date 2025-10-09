@@ -17,7 +17,7 @@ import java.net.URL;
  * @date 2024年12月27日 22:59
  */
 @Slf4j
-@Component
+// @Component
 public class LicenseCheckRunner implements ApplicationRunner {
     /**
      * 证书subject
