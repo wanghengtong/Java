@@ -29,7 +29,7 @@ public class FrameworkApplication {
         System.out.println("启动成功...");
         // 自定义Banner：https://patorjk.com/software/taag/#p=display&f=Rounded&t=your+framework&x=rainbow3&v=4&h=4&w=80&we=false
         System.out.println(
-                "                                  ██████                                                                                  █████     \n" +
+                        "                                  ██████                                                                                  █████     \n" +
                         "                                 ███░░███                                                                                ░░███      \n" +
                         " █████████████   █████ ████     ░███ ░░░  ████████   ██████   █████████████    ██████  █████ ███ █████  ██████  ████████  ░███ █████\n" +
                         "░░███░░███░░███ ░░███ ░███     ███████   ░░███░░███ ░░░░░███ ░░███░░███░░███  ███░░███░░███ ░███░░███  ███░░███░░███░░███ ░███░░███ \n" +
