@@ -1,6 +1,7 @@
 package com.wanghengtong.framework.config;
 
 import com.wanghengtong.framework.interceptor.LicenseCheckInterceptor;
+import com.wanghengtong.framework.interceptor.SignatureInterceptor;
 import com.wanghengtong.framework.interceptor.TraceIdInterceptor;
 import com.wanghengtong.framework.interceptor.WebInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,23 @@ public class WebConfig implements WebMvcConfigurer {
     
     @Autowired
     private TraceIdInterceptor traceIdInterceptor;
+    
+    @Autowired
+    private SignatureInterceptor signatureInterceptor;
+    
+    @Autowired
+    private SignatureConfig signatureConfig;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(traceIdInterceptor);
         registry.addInterceptor(webInterceptor);
+        // 根据配置决定是否添加签名拦截器及拦截路径
+        if (signatureConfig.isEnabled()) {
+            registry.addInterceptor(signatureInterceptor)
+                    .addPathPatterns(signatureConfig.getIncludePatterns())
+                    .excludePathPatterns(signatureConfig.getExcludePatterns());
+        }
         // registry.addInterceptor(licenseCheckInterceptor);
     }
 

@@ -1,5 +1,7 @@
-﻿server:
+server:
   port: 8080
+  # 优雅停机配置：immediate/graceful
+  shutdown: graceful
 
 spring:
   datasource:
@@ -55,9 +57,13 @@ cache:
 
 log:
   file:
+    # 日志文件保存总大小
     totalSizeCap: 2GB
+    # 单个日志文件最大大小
     maxFileSize: 100MB
+    # 日志文件保存天数
     maxHistory: 30
+    # 日志文件保存路径
     path: /logs
   level:
     root: info
@@ -67,13 +73,42 @@ log:
 async:
   executor:
     thread:
+      # 核心线程数
       core_pool_size: 5
+      # 最大线程数
       max_pool_size: 10
+      # 线程队列大小
       queue_capacity: 10000
+      # 线程存活时间
       keep_alive_seconds: 20
+      # 线程名称前缀
       name_prefix: Executor-
 
 license:
   subject: license
   publicAlias: publicCert
   storePass: public_password1234
+
+# API签名配置
+app:
+  signature:
+    # 签名开关
+    enabled: false
+    # 签名密钥
+    secret-key: your_secret_key_here
+    # 签名参数
+    sign-param: sign
+    # 时间戳参数
+    timestamp-param: timestamp
+    # 随机数参数
+    nonce-param: nonce
+    # 时间戳有效期
+    timestamp-validity: 300000
+    # 签名算法:MD5/HMAC-SHA256
+    algorithm: md5
+    # 需要校验签名的请求路径
+    include-patterns:
+      - /api/**
+    # 不需要校验签名的请求路径
+    exclude-params:
+      - sign

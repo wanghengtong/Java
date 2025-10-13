@@ -19,7 +19,7 @@ import java.util.Set;
  * @desc 修改日志级别
  */
 @RestController
-@RequestMapping("/log")
+@RequestMapping("/api/log")
 @Slf4j
 public class LoggerLevelController {
 
