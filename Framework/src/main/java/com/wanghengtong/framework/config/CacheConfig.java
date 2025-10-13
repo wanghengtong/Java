@@ -2,6 +2,7 @@ package com.wanghengtong.framework.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.stereotype.Component;
 
 /**
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
  */
 @Data
 @Component
+@EnableCaching
 @ConfigurationProperties(prefix = "cache")
 public class CacheConfig {
 
