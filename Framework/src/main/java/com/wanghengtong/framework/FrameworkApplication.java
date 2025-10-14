@@ -4,6 +4,7 @@ import com.wanghengtong.framework.utils.GitInfoUtils;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
@@ -14,6 +15,7 @@ import java.util.Arrays;
  * @desc FrameworkApplication
  * @date 2024年12月25日 21:24
  */
+@EnableDiscoveryClient
 @EnableAsync
 @EnableScheduling
 @SpringBootApplication

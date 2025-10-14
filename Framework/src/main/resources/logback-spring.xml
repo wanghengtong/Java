@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <springProperty scope="context" name="log.path" source="log.file.path"/>
-    <springProperty scope="context" name="log.maxFileSize" source="log.file.maxFileSize"/>
-    <springProperty scope="context" name="log.maxHistory" source="log.file.maxHistory"/>
-    <springProperty scope="context" name="log.totalSizeCap" source="log.file.totalSizeCap"/>
+    <springProperty scope="context" name="log.path" source="logging.file.path" defaultValue="/logs/framework-service"/>
+    <springProperty scope="context" name="log.maxFileSize" source="logging.file.max-size" defaultValue="100MB"/>
+    <springProperty scope="context" name="log.maxHistory" source="logging.file.max-history" defaultValue="30"/>
+    <springProperty scope="context" name="log.totalSizeCap" source="logging.file.total-size-cap" defaultValue="2GB"/>
+    <springProperty scope="context" name="log.cleanHistoryOnStart" source="logging.logback.rollingpolicy.clean-history-on-start" defaultValue="false"/>
 
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
     <conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
@@ -21,6 +22,7 @@
     </appender>
 
     <appender name="DEBUG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/debug.log</file>
         <encoder>
             <pattern>${log.pattern}</pattern>
             <charset>${log.charset}</charset>
@@ -32,7 +34,7 @@
             </timeBasedFileNamingAndTriggeringPolicy>
             <maxHistory>${log.maxHistory}</maxHistory>
             <totalSizeCap>${log.totalSizeCap}</totalSizeCap>
-            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+            <cleanHistoryOnStart>${log.cleanHistoryOnStart}</cleanHistoryOnStart>
         </rollingPolicy>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>DEBUG</level>
@@ -40,6 +42,7 @@
     </appender>
 
     <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/info.log</file>
         <encoder>
             <pattern>${log.pattern}</pattern>
             <charset>${log.charset}</charset>
@@ -51,7 +54,7 @@
             </timeBasedFileNamingAndTriggeringPolicy>
             <maxHistory>${log.maxHistory}</maxHistory>
             <totalSizeCap>${log.totalSizeCap}</totalSizeCap>
-            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+            <cleanHistoryOnStart>${log.cleanHistoryOnStart}</cleanHistoryOnStart>
         </rollingPolicy>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>INFO</level>
@@ -59,6 +62,7 @@
     </appender>
 
     <appender name="WARN_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/warn.log</file>
         <encoder>
             <pattern>${log.pattern}</pattern>
             <charset>${log.charset}</charset>
@@ -70,7 +74,7 @@
             </timeBasedFileNamingAndTriggeringPolicy>
             <maxHistory>${log.maxHistory}</maxHistory>
             <totalSizeCap>${log.totalSizeCap}</totalSizeCap>
-            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+            <cleanHistoryOnStart>${log.cleanHistoryOnStart}</cleanHistoryOnStart>
         </rollingPolicy>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>WARN</level>
@@ -78,6 +82,7 @@
     </appender>
 
     <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/error.log</file>
         <encoder>
             <pattern>${log.pattern}</pattern>
             <charset>${log.charset}</charset>
@@ -89,7 +94,7 @@
             </timeBasedFileNamingAndTriggeringPolicy>
             <maxHistory>${log.maxHistory}</maxHistory>
             <totalSizeCap>${log.totalSizeCap}</totalSizeCap>
-            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+            <cleanHistoryOnStart>${log.cleanHistoryOnStart}</cleanHistoryOnStart>
         </rollingPolicy>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>ERROR</level>
@@ -111,11 +116,11 @@
             <cleanHistoryOnStart>true</cleanHistoryOnStart>
         </rollingPolicy>
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>${log.level.root}</level>
+            <level>${logging.level.root}</level>
         </filter>
     </appender>
 
-    <root level="info">
+    <root level="INFO">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="DEBUG_FILE"/>
         <appender-ref ref="INFO_FILE"/>
