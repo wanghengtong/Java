@@ -20,6 +20,7 @@ public class TestDemo {
         javaUtils.set("base64Encode", new LuaCallJavaUtils.Base64EncodeFunction());
         javaUtils.set("base64Decode", new LuaCallJavaUtils.Base64DecodeFunction());
         javaUtils.set("md5Hex", new LuaCallJavaUtils.Md5HexFunction());
+        javaUtils.set("log", new LuaCallJavaUtils.LogFunction());
 
         javaUtils.set("luaTableToJson",new LuaCallJavaUtils.JsonEncodeFunction());
         return javaUtils;

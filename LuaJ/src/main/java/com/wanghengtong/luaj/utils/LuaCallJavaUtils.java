@@ -143,4 +143,12 @@ public class LuaCallJavaUtils {
         }
     }
 
+    public static class LogFunction extends OneArgFunction {
+        @Override
+        public LuaValue call(LuaValue arg) {
+            System.out.println(arg.checkjstring());
+            return LuaValue.valueOf("");
+        }
+    }
+
 }

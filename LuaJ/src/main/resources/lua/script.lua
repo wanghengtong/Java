@@ -52,10 +52,9 @@ local params = {
     data = json:encode(data)
 }
 local table1 = json:decode(json:encode(params))
-print("json:decode.name：",table1.name)
+print("json:decode.name：", table1.name)
 local getData = table1.data
-print("json:decode.data：",getData)
-print("json:decode.data.name：",json:decode(getData).name)
+print("json:decode.data：", getData)
+print("json:decode.data.name：", json:decode(getData).name)
 
-
-
+java.log("当前时间：" .. os.date('%Y-%m-%d %H:%M:%S', os.time()))
