@@ -1,6 +1,7 @@
 package com.wanghengtong.gmca.dualdemo;
 
 import java.security.KeyPair;
+import java.security.Signature;
 import java.security.cert.X509Certificate;
 
 public class SM2DualCertificateDemo {
@@ -26,12 +27,20 @@ public class SM2DualCertificateDemo {
         System.out.println("\n4. 加密证书信息:");
         CertificateUtils.printCertificateInfo(dualCerts.getEncryptionCert(), "加密证书");
 
-        // 5. 验证证书差异
-        System.out.println("\n5. 证书差异分析:");
+        // 5. 验证证书和私钥是否匹配
+        System.out.println("\n5. 验证证书和私钥匹配性...");
+        boolean signCertValid = validateCertKeyPair(dualCerts.getSignatureCert(), dualCerts.getSignatureKeyPair());
+        boolean encryptCertValid = validateCertKeyPair(dualCerts.getEncryptionCert(), dualCerts.getEncryptionKeyPair());
+        
+        System.out.println("  签名证书和私钥匹配: " + (signCertValid ? "✓ 是" : "✗ 否"));
+        System.out.println("  加密证书和私钥匹配: " + (encryptCertValid ? "✓ 是" : "✗ 否"));
+
+        // 6. 验证证书差异
+        System.out.println("\n6. 证书差异分析:");
         analyzeCertificateDifferences(dualCerts);
 
-        // 6. 验证证书签名
-        System.out.println("\n6. 验证证书签名...");
+        // 7. 验证证书签名
+        System.out.println("\n7. 验证证书签名...");
         try {
             dualCerts.getSignatureCert().verify(caKeyPair.getPublic());
             dualCerts.getEncryptionCert().verify(caKeyPair.getPublic());
@@ -40,8 +49,8 @@ public class SM2DualCertificateDemo {
             System.out.println("✗ 证书签名验证失败: " + e.getMessage());
         }
 
-        // 7. 保存所有证书和密钥
-        System.out.println("\n7. 保存证书文件...");
+        // 8. 保存所有证书和密钥
+        System.out.println("\n8. 保存证书文件...");
         DualCertificateUtils.saveDualCertificates(dualCerts, "sm2");
         // DualCertificateUtils.saveCertificateToPEM(caCert, "sm2");
         // DualCertificateUtils.savePrivateKeyToPEM(caKeyPair, "sm2");
@@ -56,6 +65,30 @@ public class SM2DualCertificateDemo {
         // System.out.println("encrypt-pub.pem (加密公钥)");
         // System.out.println("sm2-ca-cert.pem (CA根证书)");
         // System.out.println("sm2-ca-key.pem (CA私钥)");
+    }
+
+    /**
+     * 验证证书和私钥是否匹配
+     */
+    private static boolean validateCertKeyPair(X509Certificate cert, KeyPair keyPair) {
+        try {
+            // 使用私钥签名一些数据
+            Signature signature = Signature.getInstance("SM3withSM2", "BC");
+            signature.initSign(keyPair.getPrivate());
+            
+            byte[] testData = "test data for validation".getBytes();
+            signature.update(testData);
+            byte[] signResult = signature.sign();
+            
+            // 使用证书中的公钥验证签名
+            signature.initVerify(cert.getPublicKey());
+            signature.update(testData);
+            
+            return signature.verify(signResult);
+        } catch (Exception e) {
+            System.out.println("验证过程中出现错误: " + e.getMessage());
+            return false;
+        }
     }
 
     /**
